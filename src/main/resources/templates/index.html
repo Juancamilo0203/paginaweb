@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Aplicación Web</title>
+    <link rel="stylesheet" href="/css/styles.css"> <!-- Enlace a tus estilos -->
+</head>
+<body>
+<!-- Barra de navegación -->
+<header class="navbar">
+    <div class="container">
+        <h1>Mi Aplicación</h1>
+        <nav>
+            <ul>
+                <li><a href="#">Inicio</a></li>
+                <li>
+                    <a href="#">Servicios</a>
+                    <ul class="dropdown">
+                        <li><a href="#">Servicio 1</a></li>
+                        <li><a href="#">Servicio 2</a></li>
+                        <li><a href="#">Servicio 3</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Contacto</a></li>
+            </ul>
+        </nav>
+        <div class="search-bar">
+            <input type="text" placeholder="Buscar...">
+            <button type="submit">Buscar</button>
+        </div>
+    </div>
+</header>
+
+<!-- Carrusel de productos -->
+<section class="carousel">
+    <h2>Carrusel de Productos</h2>
+    <div class="carousel-images">
+        <!-- Aquí puedes agregar algunos productos destacados del carrusel, por ejemplo los 4 primeros -->
+        <div th:each="producto : ${productos}" th:if="${producto} != null" class="carousel-item">
+            <img th:src="${producto.imageurl}" alt="Imagen de [[${producto.name}]]">
+            <h3 th:text="${producto.name}">Nombre del producto</h3>
+            <p>Precio: $<span th:text="${producto.price}">0.00</span></p>
+        </div>
+    </div>
+    <div class="carousel-buttons">
+        <button class="carousel-button" id="prev">◀</button>
+        <button class="carousel-button" id="next">▶</button>
+    </div>
+</section>
+
+<section class="product-list">
+    <h2>Productos</h2>
+    <div class="products">
+        <div th:if="${#lists.isEmpty(productos)}">
+            <p>No hay productos disponibles.</p>
+        </div>
+        <div th:each="producto : ${productos}" class="product-card">
+            <img th:src="${producto.imageurl}" th:alt="${producto.name}">
+            <h3 th:text="${producto.name}">Nombre del producto</h3>
+            <p>Precio: $<span th:text="${producto.price}">0.00</span></p>
+            <p>Valoración: ★<span th:text="${producto.rating}">0.0</span></p>
+        </div>
+    </div>
+</section>
+<!-- Barra inferior -->
+<footer class="footer">
+    <div class="container">
+        <p>Síguenos en:</p>
+        <a href="#">Facebook</a> |
+        <a href="#">Twitter</a> |
+        <a href="#">Instagram</a> |
+        <a href="#">LinkedIn</a>
+        <p>Contacto: info@miaplicacion.com</p>
+    </div>
+</footer>
+
+<script>
+    let currentIndex = 0;
+    const items = document.querySelectorAll('.carousel-item');
+    const totalItems = items.length;
+
+    document.getElementById('next').addEventListener('click', function() {
+        currentIndex = (currentIndex + 1) % totalItems;
+        updateCarousel();
+    });
+
+    document.getElementById('prev').addEventListener('click', function() {
+        currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+        updateCarousel();
+    });
+
+    function updateCarousel() {
+        const carouselImages = document.querySelector('.carousel-images');
+        const offset = -currentIndex * 100;
+        carouselImages.style.transform = `translateX(${offset}%)`;
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">>
+<head>
+    <meta charset="UTF-8">
+    <title>Lista Productos</title>
+</head>
+<body>
+    <h1>Productos</h1>
+    <ul>
+        <li th:each="producto : ${productos}">
+            <span th:text="${producto.name}" >nombre</span>
+            <span th:text="${producto.price}" >precio</span>
+            <img th:src="${producto.imageurl}" alt="Imagen de [[${producto.name}]]" />
+            <span th:text="${producto.rating}" >rating</span>
+
+        </li>
+    </ul>
+    <h2>Agregar Productos</h2>
+    <form action="#" th:action="@{/productos}" th:object="${producto}" method="post"> <!-- Usa 'producto' -->
+        <input type="text" th:field="*{name}" placeholder="Nombre"/>  <!-- Propiedad 'name' -->
+        <input type="number" th:field="*{price}" placeholder="Precio"/>  <!-- Propiedad 'price' -->
+        <button type="submit">Agregar</button>
+    </form>
+
+</body>
+</html>
